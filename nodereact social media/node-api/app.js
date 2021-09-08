@@ -2,6 +2,7 @@ const express=require("express")
 const morgan=require("morgan")
 const dotenv=require("dotenv")
 const bodyParser=require("body-parser")
+const cookieParser=require("cookie-parser")
 dotenv.config()
 const mongoose=require('mongoose');
 const expressValidator=require('express-validator')
@@ -21,6 +22,7 @@ mongoose.connect(process.env.DATABASE,{
 
 //bring in routes
 const postRoutes=require('./routes/post')
+const authRoutes=require('./routes/auth')
 
 
 // const myOwnMiddleware=(req,res,next)=>{
@@ -32,7 +34,9 @@ app.use(morgan("dev"))
 // app.use(myOwnMiddleware)
 app.use(expressValidator())
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use("/",postRoutes)
+app.use("/",authRoutes)
 
 const port=process.env.PORT||8000;
 app.listen(port,()=>{
